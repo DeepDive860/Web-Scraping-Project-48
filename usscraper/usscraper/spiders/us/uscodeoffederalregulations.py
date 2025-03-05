@@ -21,7 +21,6 @@ class USCodeOfFederalRegulations(scrapy.Spider):
 
             yield scrapy.Request(
                 url=url,
-               
                 meta={
                     "playwright": True,
                     "playwright_include_page": True,
@@ -39,12 +38,11 @@ class USCodeOfFederalRegulations(scrapy.Spider):
 
         for header in headers:
 
-
             title = header.css("h4.result-title a p::text").get()
 
             document_title = header.css("h5.document-title p::text").get()
-            source_url = header.css("h4.result-title a::attr(href)").get()
-            source_pdf = header.css("a.btn-details[href$= '.pdf'] ").get()
+            source_url = response.urljoin(header.css("h4.result-title a::attr(href)").get())
+            source_pdf = response.urljoin(header.css("a.btn-details[href$= '.pdf']::attr(href)").get())
 
             yield {
                 "Title": title,
@@ -72,12 +70,8 @@ class USCodeOfFederalRegulations(scrapy.Spider):
                     encoding="utf-8",
                     request=response.request
                 )
-
                 async for item in self.parse(updated_content):
                     yield item
-
-                
-
 
         except Exception as e:
             self.logger.warning("Playwright error {e}")
