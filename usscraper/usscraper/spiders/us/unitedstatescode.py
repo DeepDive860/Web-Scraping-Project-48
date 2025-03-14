@@ -102,7 +102,7 @@ class UsCode(scrapy.Spider):
     def save_to_database(self, header_name, source_link, source_pdf):
 
         try:
-
+            
             sql = "INSERT INTO data (title, source_url, source_pdf)  VALUES (%s, %s, %s)"
             values = (header_name, source_link, source_pdf)
 
