@@ -3,7 +3,7 @@ from scrapy_playwright.page import PageMethod
 from scrapy.http import HtmlResponse
 
 
-class FederalRegister(scrapy.Spider):
+class UsSpending(scrapy.Spider):
 
     name = "federalregister"
     start_urls = ["https://www.usaspending.gov/federal_account"]
@@ -112,7 +112,6 @@ class FederalRegister(scrapy.Spider):
         except Exception as e:
             self.logger.warning(f"Playwright error {e}")
 
-    def parse_inside(self, response):
 
 
 
