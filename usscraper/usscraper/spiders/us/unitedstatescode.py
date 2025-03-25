@@ -17,24 +17,7 @@ class UsCode(scrapy.Spider):
 
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        try:
-            self.connection = pymysql.connect(
-                host="localhost",
-                user="root",
-                password="HAHAHA",
-                database="usgovdata",
-                charset="utf8mb4",
-                cursorclass=pymysql.cursors.DictCursor
-            )
-
-            self.cursor = self.connection.cursor()
-
-            
-        except Exception as e:
-            self.logger.warning(f"Connection failed {e}")
+  
 
 
 
@@ -67,13 +50,12 @@ class UsCode(scrapy.Spider):
                 source_pdf = response.urljoin(item.css("a.btn-details[href$='.pdf']::attr(href)").get())
 
                 yield {
-                    "Header_Name": header_name,
-                    "Source-Link": source_link,
-                    "Source_Pdf": source_pdf
+                    "header_name": header_name,
+                    "source_link": source_link,
+                    "source_pdf": source_pdf
                 }
 
-                self.save_to_database(header_name, source_link, source_pdf)
-
+              
             while True:
 
                 next_button = await page.query_selector("li.page-item:not(.disabled) >> text='Next'")
@@ -99,30 +81,7 @@ class UsCode(scrapy.Spider):
         except Exception as e:
             self.logger.warning(f"Playwright error {e}")
 
-    def save_to_database(self, header_name, source_link, source_pdf):
-
-        try:
-            
-            sql = "INSERT INTO data (title, source_url, source_pdf)  VALUES (%s, %s, %s)"
-            values = (header_name, source_link, source_pdf)
-
-            self.cursor.execute(sql, values)
-            self.connection.commit()
-            self.logger.info("Inserted Succcesfully")
-
-        except Exception as e:
-
-            self.logger.error(f"Error inserting {e}")
-            self.connection.rollback()
-
-            
-
-
-
-
-
-
-        
+   
 
 
 
