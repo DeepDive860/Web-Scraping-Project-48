@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "usscraper.spiders"
 #USER_AGENT = "usscraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 
 # settings.py

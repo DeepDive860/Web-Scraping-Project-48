@@ -17,10 +17,6 @@ class UsCode(scrapy.Spider):
 
     }
 
-  
-
-
-
     def start_requests(self):
 
         for url in self.start_urls:
@@ -74,7 +70,6 @@ class UsCode(scrapy.Spider):
                     encoding='utf-8',
                     request=response.request
                 )
-
                 async for item in self.parse(updated_content):
                     yield item
 

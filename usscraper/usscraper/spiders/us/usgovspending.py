@@ -80,9 +80,7 @@ class UsSpending(scrapy.Spider):
                 "budget_resources_2025": budget_resources_current_year
             }
 
-        
-        
-
+    
         page = response.meta["playwright_page"]
         next_selector = 'button.pager__button[title="Next page"]:not([disabled])'
         try:
