@@ -75,14 +75,3 @@ class UsCode(scrapy.Spider):
 
         except Exception as e:
             self.logger.warning(f"Playwright error {e}")
-
-   
-
-
-
-
-
-        
-
-        
-

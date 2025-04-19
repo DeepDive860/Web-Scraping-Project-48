@@ -179,8 +179,6 @@ class LeagueOfNationTreatySeries(scrapy.Spider):
 
     def parse_item(self, response):
 
-      
-
         data_rows = response.css("table.table.table-striped.table-bordered.table-hover.table-condensed td[align='left']")
 
 
