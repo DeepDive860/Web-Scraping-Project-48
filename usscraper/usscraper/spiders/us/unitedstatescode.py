@@ -51,7 +51,6 @@ class UsCode(scrapy.Spider):
                     "source_pdf": source_pdf
                 }
 
-              
             while True:
 
                 next_button = await page.query_selector("li.page-item:not(.disabled) >> text='Next'")
