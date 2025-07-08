@@ -3,10 +3,9 @@ import random
 
 
 class DataGov(scrapy.Spider):
-    #3202 data 
-
+   
     name = "usdataset"
-    start_urls = ["https://catalog.data.gov/dataset/?q=&sort=views_recent+desc&page=3767"]
+    start_urls = ["https://catalog.data.gov/dataset/?q=&sort=views_recent+desc&page=1"]
     
     custom_settings = {
         "CONCURRENT_REQUESTS": 8,
