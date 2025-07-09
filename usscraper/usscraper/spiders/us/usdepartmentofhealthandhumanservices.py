@@ -124,7 +124,6 @@ class US_DEPARTMENT_OF_HEALTH_AND_HUMANSERVICES(scrapy.Spider):
             if not source_url.lower().endswith("pdf"):
                 continue
 
-                
             if not title:
                 title = None
             
