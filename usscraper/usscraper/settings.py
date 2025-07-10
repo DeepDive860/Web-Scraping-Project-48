@@ -111,3 +111,35 @@ ITEM_PIPELINES = {
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+# Scrapy settings for usscraper project
+
+# BOT_NAME = "usscraper"
+
+# SPIDER_MODULES = ["usscraper.spiders"]
+# NEWSPIDER_MODULE = "usscraper.spiders"
+
+# ROBOTSTXT_OBEY = False
+
+# # ────────── Playwright Configuration ──────────
+# DOWNLOAD_HANDLERS = {
+#     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+#     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+# }
+
+# TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+# PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30000  # 30 seconds
+
+
+# # ────────── Selenium (Optional for specific spiders) ──────────
+# # Note: You must conditionally configure `DOWNLOADER_MIDDLEWARES` in those spiders or via code
+# # Example inside spider:
+# # custom_settings = { "DOWNLOADER_MIDDLEWARES": { "scrapy_selenium.SeleniumMiddleware": 800 } }
+
+# # ────────── Pipelines ──────────
+# ITEM_PIPELINES = {
+#    "usscraper.pipelines.UsscraperPipeline": 300,
+# }
+
+# # ────────── Output ──────────
+# FEED_EXPORT_ENCODING = "utf-8"
