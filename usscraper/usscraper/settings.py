@@ -84,7 +84,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "usscraper.pipelines.UsscraperPipeline": 300,
+#    "usscraper.pipelines.UsscraperPipeline": 300,
+     'usscraper.pipelines.ExcelExportPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
