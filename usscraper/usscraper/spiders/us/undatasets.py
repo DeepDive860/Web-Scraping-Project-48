@@ -29,39 +29,39 @@ class UNDatasetSpider(scrapy.Spider):
                     """
                     (async () => {
                     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-                    // Set overall maximum time (in milliseconds) and stability period.
+                   
                     const maxTime = 30000;       // maximum overall time (30 seconds)
                     const stableThreshold = 5000; // exit if no new toggles appear for 5 seconds
                     const startTime = Date.now();
                     let lastToggleTime = Date.now();
                     
                     while (true) {
-                        // Get all toggles not yet clicked
+                       
                         const toggles = Array.from(document.querySelectorAll('a.ygtvspacer:not(.expanded)'));
                         console.log("Found toggles: " + toggles.length);
                         
                         if (toggles.length > 0) {
-                        // Update the time when toggles were found
+                      
                         lastToggleTime = Date.now();
-                        // Click each toggle sequentially
+                       
                         for (const toggle of toggles) {
                             toggle.click();
                             toggle.classList.add('expanded');
                             await delay(300);  // short delay after each click
                         }
-                        // Wait after the round to allow new toggles to load
+                       
                         await delay(1000);
                         } else {
-                        // If no new toggles appear for the stability period, break out.
+                       
                         if (Date.now() - lastToggleTime >= stableThreshold) {
                             console.log("No new toggles for " + stableThreshold + " ms; assuming expansion complete.");
                             break;
                         }
-                        // Otherwise, wait a little and check again.
+                       
                         await delay(1000);
                         }
                         
-                        // If we've been running for more than the max time, exit.
+                        
                         if (Date.now() - startTime >= maxTime) {
                         console.log("Max time reached; exiting expansion loop.");
                         break;

@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+import os
 # Scrapy settings for usscraper project
 #
 # For simplicity, this file contains only settings considered important or
@@ -6,6 +9,14 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+
+BASE_DIR = os.path.dirname(__file__)
+SPIDER_REGISTRY_PATH = os.path.join(BASE_DIR, "spiders_registry.json")
+
+with open(SPIDER_REGISTRY_PATH) as f:
+    SPIDER_REGISTRY = json.load(f)
+
+
 
 BOT_NAME = "usscraper"
 
@@ -20,13 +31,15 @@ NEWSPIDER_MODULE = "usscraper.spiders"
 ROBOTSTXT_OBEY = False
 
 
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+
 # settings.py
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
 }
 
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 # PLAYWRIGHT_LAUNCH_OPTIONS = {
 #     "headless": True,
@@ -38,6 +51,7 @@ PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30000  # 30 seconds
 # Add playwright middleware
 DOWNLOADER_MIDDLEWARES = {
     'scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler': 543,
+    
 }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
@@ -85,7 +99,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    "usscraper.pipelines.UsscraperPipeline": 300,
-     'usscraper.pipelines.ExcelExportPipeline': 300
+     'usscraper.pipelines.MultiFormatExportPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

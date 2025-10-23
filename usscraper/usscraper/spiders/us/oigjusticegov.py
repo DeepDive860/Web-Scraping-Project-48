@@ -25,14 +25,14 @@ class USDepartmentOfJusticeOfficeOfTheInspectorGeneral(scrapy.Spider):
        
         },
          'PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT': 120000,
-        # "CONCURRENT_REQUESTS": 2,
-        # "DOWNLOAD_DELAY": 2,
+        "CONCURRENT_REQUESTS": 2,
+        "DOWNLOAD_DELAY": 2,
 
-        "CONCURRENT_REQUESTS_PER_IP": 5
-        # "AUTOTHROTTLE_ENABLED": True,
-        # "AUTOTHROTTLE_START_DELAY": 2,
-        # "AUTOTHROTTLE_MAX_DELAY": 60,
-        # "RETRY_HTTP_CODES":[503]
+        "CONCURRENT_REQUESTS_PER_IP": 5,
+        "AUTOTHROTTLE_ENABLED": True,
+        "AUTOTHROTTLE_START_DELAY": 2,
+        "AUTOTHROTTLE_MAX_DELAY": 60,
+        "RETRY_HTTP_CODES":[503]
     }
 
     
