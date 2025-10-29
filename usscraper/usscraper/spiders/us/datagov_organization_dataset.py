@@ -12,14 +12,15 @@ class DataGovOrganization(scrapy.Spider):
 
     custom_settings = {
 
-        "CONCURRENT_REQUESTS": 4,
+        "CONCURRENT_REQUESTS": 10,
 
         "PLAYWRIGHT_LAUNCH_OPTIONS": {
             "headless": False
         },
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
         "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 180000,
-        "PLAYWRIGHT_NAVIGATION_TIMEOUT": 180000
+        "PLAYWRIGHT_NAVIGATION_TIMEOUT": 180000,
+        "RETRY_HTTP_CODES": [403, 500, 502, 503, 504, 522, 524, 408, 429]
 
     }
 
@@ -32,17 +33,27 @@ class DataGovOrganization(scrapy.Spider):
             yield scrapy.Request(
                 url=url,
                 meta={
-                    "playwright": True
+                    "playwright": True,
+                    "playwright_include_page": True
                 }
                 
             )
 
     def parse(self, response):
 
-        
+        page = response.meta["playwright_page"]
+
         organizations = response.css("li.media-item")
 
+        if not organizations:
+            page.close()
+            return
+
         for organization in organizations:
+
+            if not organization:
+                continue
+
             organization_name = organization.css("h2.media-heading::text").get()
             raw_url = organization.css("a.media-view::attr(href)").get()
 
@@ -56,8 +67,10 @@ class DataGovOrganization(scrapy.Spider):
                     url=source_url,
                     meta={
                         "playwright": True,
+                        "playwright_include_page": True,
                         "playwright_page_methods": [
-                            PageMethod("wait_for_load_state", "networkidle")
+                            PageMethod("wait_for_load_state", "networkidle"),
+                            PageMethod("wait_for_selector", "li.dataset-item", timeout=60000)
 
                         ],
 
@@ -67,17 +80,22 @@ class DataGovOrganization(scrapy.Spider):
                     },
                     callback=self.parse_dataset,
                     priority=0
-
                 )
 
         
     def parse_dataset(self, response):
 
+        page = response.meta["playwright_page"]
+
         organization_name = response.meta.get("organization_name")
         organization_source_url = response.meta.get("organization_source_url")
 
-        dataset_list = response.css("li.dataset-item.has-organization")
 
+        dataset_list = response.css("li.dataset-item")
+
+        if not dataset_list:
+            page.close()
+            
         dataset_item = response.meta.get("dataset_items", [])
 
         for dataset in dataset_list:
@@ -89,6 +107,12 @@ class DataGovOrganization(scrapy.Spider):
             description = dataset.css("div.note div::text").get() 
             data_formats = dataset.css("ul.dataset-resources.unstyled li a.label.label-default::attr(href)").getall() 
 
+            print('Dataset')
+
+            print(title)
+            print(description)
+            print(data_formats)
+
             dataset_item.append(
 
                 {
@@ -98,8 +122,7 @@ class DataGovOrganization(scrapy.Spider):
                     "data_formats": data_formats 
                 }
             )
-
-            
+    
         raw_next_page_url = response.css("ul.pagination.justify-content-center li.page-item a.page-link::attr(href)").getall()
 
         if raw_next_page_url:
@@ -110,10 +133,15 @@ class DataGovOrganization(scrapy.Spider):
                 callback=self.parse_dataset,
                 meta={
                     "playwright": True,
+                    "playwright_include_page": True,
                     "playwright_page_methods": [
-                        PageMethod("wait_for_load_state", "networkidle")
+                        PageMethod("wait_for_load_state", "networkidle"),
+                        PageMethod("wait_for_selector", "li.dataset-item", timeout=60000)
+
                     ],
-                    "dataset_items": dataset_item
+                    "dataset_items": dataset_item,
+                    "organization_source_url": organization_source_url,
+                    "organization_name": organization_name
                 },
                 priority=100
             )
@@ -125,7 +153,10 @@ class DataGovOrganization(scrapy.Spider):
             "organization_source_url": organization_source_url,
             "datasets": dataset_item
         }   
-        
+ 
+
+    
+    
 
 
         

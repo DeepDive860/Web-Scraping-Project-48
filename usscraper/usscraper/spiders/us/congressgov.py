@@ -48,11 +48,11 @@ class UsCongressGov(scrapy.Spider):
                                       "Chrome/115.0.0.0 Safari/537.36",
                         "viewport": {"width": 1366, "height": 768},
                         "ignore_https_errors": True,
-                        "proxy": {
-                            "server": f"http://{self.OX_SERVER}",
-                            "username": self.OX_USERNAME,
-                            "password": self.OX_PASSWORD,
-                        },
+                        # "proxy": {
+                        #     "server": f"http://{self.OX_SERVER}",
+                        #     "username": self.OX_USERNAME,
+                        #     "password": self.OX_PASSWORD,
+                        # },
                         "java_script_enabled": True,
                         "bypass_csp": True,
                         "record_video_dir": None,

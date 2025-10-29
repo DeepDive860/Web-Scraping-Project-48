@@ -13,9 +13,14 @@ class CompilationOfPresedentialDocumentUs(scrapy.Spider):
         "PLAYWRIGHT_NAVIGATION_TIMEOUT": 180000,
         "PLAYWRIGHT_NAVIGATION_DEFAULT_TIMEOUT": 180000,
 
-        "PLAYWRIGHT_LAUNCH_OPTIONS": {"headless": False}
+        "PLAYWRIGHT_LAUNCH_OPTIONS": {"headless": False},
+        "RETRY_TIMES": 5,
+      
+        
+
 
         }
+    
     def start_requests(self):
         for url in self.start_urls:
             yield scrapy.Request(
